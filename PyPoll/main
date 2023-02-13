@@ -1,0 +1,79 @@
+import os
+from collections import Counter
+import csv
+csvFilePath = os.path.join("..", "Resources", "election_data.csv")
+
+electionanalysiscsv = os.path.join("electanalysis.txt")
+
+print("Election results")
+print("--------------------------------------------------") 
+rowcount = 0
+total = 0
+Votescount = 0
+prev_cand = 'test'
+candicate_list = []
+percentage_vote = 0.00
+X= 0
+final_vote = []
+output =""
+
+with open(csvFilePath, newline='') as csvfile:
+    data = csv.reader(csvfile)
+    headings =  next(data)
+    for row in data:
+
+
+      # Calculating number of Votes## 
+        rowcount += 1
+
+        candicate_list.append(row[2])
+  
+new_vals = Counter(candicate_list).most_common()
+
+     
+print ("Total Votes:" , rowcount)
+print ("--------------------------------------------------")
+
+with open(electionanalysiscsv,"w") as textfile:
+  output += "Election results\n"
+  output += "--------------------------------------------------\n" 
+  output +=f"Total Votes:\t\t\t {rowcount}\n"
+  output += "--------------------------------------------------\n" 
+
+
+#Calculating Votes for each candicate" 
+
+new_vals = Counter(candicate_list).most_common()
+final_vote = new_vals
+
+#Calculating percentage based on the votes cast#
+
+for a,b in new_vals:
+ percentage_vote = round((b/rowcount)*100,2)
+
+ print (a,percentage_vote,"%"  ,"(",b,")")
+ 
+ with open(electionanalysiscsv,"w") as textfile:
+    
+    output +=f"{a}\t\t\t{percentage_vote}%\t\t {b}\n"
+
+   
+  #finding winner based on popular vote# 
+
+ if X > b:
+    None
+ else:
+  X = b
+  Person = a
+ 
+
+#Print ("Vote Count:" , votecount)
+print ("--------------------------------------------------")
+print ("Winner :", Person  )
+
+with open(electionanalysiscsv,"w") as textfile:
+   
+ output += "--------------------------------------------------\n" 
+ output +=f"Winner :\t\t\t {Person}\n"
+
+ textfile.write(output)
